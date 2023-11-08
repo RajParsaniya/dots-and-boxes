@@ -1,0 +1,46 @@
+:root {
+	--white: #FFFFFF;
+	--player-me-svg: #EC7063;
+	--player-you-svg: #52BE80;
+	--player-me-line: #B03A2E;
+	--player-you-line: #1E8449;
+}
+
+.svg {
+	stroke: var(--white);
+}
+
+.line {
+	position: relative;
+	stroke-width: 0.45rem;
+	opacity: 0.1;
+	cursor: pointer;
+}
+
+.dot {
+	stroke-width: 10%;
+}
+
+.line:hover {
+	opacity: 0.9;
+}
+
+.svg-player-me {
+	background-color: var(--player-me-svg);
+}
+
+.svg-player-you {
+	background-color: var(--player-you-svg);
+}
+
+.line-player-me {
+	stroke: var(--player-me-line);
+	opacity: 0.9;
+	cursor: not-allowed;
+}
+
+.line-player-you {
+	stroke: var(--player-you-line);
+	opacity: 0.9;
+	cursor: not-allowed;
+}
