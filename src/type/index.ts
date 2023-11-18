@@ -1,4 +1,4 @@
-import { IBox, IBoxDotType, IBoxPathType, IBoxValue, IBoxValuePathType, IDot, IMove, IPath } from "../interfaces";
+import { IBox, IBoxDotType, IBoxPathType, IBoxValue, IBoxValuePathType, IDot, IGameValue, IMove, IPath } from "../interfaces";
 
 export type Player = "ME" | "YOU";
 
@@ -13,6 +13,7 @@ export type BoxValuePath = IPath<IBoxValuePathType>;
 
 export type Box = IBox;
 export type BoxValue = IBoxValue;
+export type GameValue = IGameValue;
 export type Move = IMove;
 
 export type Board = Array<Array<Box>>;

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDefaultValues } from ".";
 import { LOCAL_STORAGE_KEY } from "../constants";
-import { IGameValue } from "../interfaces";
+import { GameValue } from "../type";
 import { JsonUtils } from "../utils";
 
 interface ILocalStorageExports {
@@ -12,11 +12,11 @@ interface ILocalStorageExports {
 export const useLocalStorage = (): ILocalStorageExports => {
 	const { defaultGameValue } = useDefaultValues();
 
-	const setLocalStorageValue = useCallback((localStorageValue: IGameValue) => {
+	const setLocalStorageValue = useCallback((localStorageValue: GameValue) => {
 		localStorage.setItem(LOCAL_STORAGE_KEY, JsonUtils.toString(localStorageValue));
 	}, []);
 
-	const getLocalStrorageValue = useCallback((): IGameValue => {
+	const getLocalStrorageValue = useCallback((): GameValue => {
 		const localStorageValue: string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
 		if (localStorageValue === null) {
 			setLocalStorageValue(defaultGameValue);
@@ -27,7 +27,7 @@ export const useLocalStorage = (): ILocalStorageExports => {
 	}, [defaultGameValue, setLocalStorageValue]);
 
 	const setBestScore = (score: number): void => {
-		const localStorageValue: IGameValue = getLocalStrorageValue();
+		const localStorageValue: GameValue = getLocalStrorageValue();
 		if (score > localStorageValue.bestScore) {
 			localStorageValue.bestScore = score;
 			setLocalStorageValue(localStorageValue);
@@ -35,7 +35,7 @@ export const useLocalStorage = (): ILocalStorageExports => {
 	};
 
 	const getBestScore = (): number => {
-		const localStorageValue: IGameValue = getLocalStrorageValue();
+		const localStorageValue: GameValue = getLocalStrorageValue();
 		return localStorageValue.bestScore;
 	};
 

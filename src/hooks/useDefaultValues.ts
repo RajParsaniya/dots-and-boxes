@@ -1,11 +1,10 @@
-import { IGameValue } from "../interfaces";
-import { Board, BoardValue, Box, BoxDot, BoxId, BoxPath, BoxPathId, BoxValue, BoxValueId, BoxValuePath } from "../type";
+import { Board, BoardValue, Box, BoxDot, BoxId, BoxPath, BoxPathId, BoxValue, BoxValueId, BoxValuePath, GameValue } from "../type";
 import { ArrayUtils } from "../utils";
 
 interface IDefaultValuesExports {
 	defaultBoard: (rows: number, cols: number) => Board;
 	defaultBoardValue: (rows: number, cols: number) => BoardValue;
-	defaultGameValue: IGameValue;
+	defaultGameValue: GameValue;
 }
 
 export const useDefaultValues = (): IDefaultValuesExports => {
@@ -85,7 +84,7 @@ export const useDefaultValues = (): IDefaultValuesExports => {
 	const defaultBoard = (rows: number, cols: number): Board => createDefaultBoard(rows, cols);
 	const defaultBoardValue = (rows: number, cols: number): BoardValue => createDefaultBoardValue(rows, cols);
 
-	const defaultGameValue: IGameValue = {
+	const defaultGameValue: GameValue = {
 		bestScore: 0,
 	};
 
