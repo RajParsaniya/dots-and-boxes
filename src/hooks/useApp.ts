@@ -98,7 +98,7 @@ export const useApp = (props: IAppProps): IAppExports => {
 	};
 
 	const onClickReplay = (): void => {
-		if (!isFreezed) {
+		if (isEnded || !isFreezed) {
 			setIsStarted(false);
 			setIsEnded(false);
 			resetGame();
