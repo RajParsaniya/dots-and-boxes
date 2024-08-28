@@ -1,7 +1,6 @@
 import { useCallback } from "react";
-import { useDefaultValues } from ".";
 import { LOCAL_STORAGE_KEY } from "../constants";
-import { GameValue } from "../type";
+import { LocalStorage } from "../type";
 import { JsonUtils } from "../utils";
 
 interface ILocalStorageExports {
@@ -10,33 +9,33 @@ interface ILocalStorageExports {
 }
 
 export const useLocalStorage = (): ILocalStorageExports => {
-	const { defaultGameValue } = useDefaultValues();
-
-	const setLocalStorageValue = useCallback((localStorageValue: GameValue) => {
+	const setLocalStorageValue = useCallback((localStorageValue: LocalStorage): void => {
 		localStorage.setItem(LOCAL_STORAGE_KEY, JsonUtils.toString(localStorageValue));
 	}, []);
 
-	const getLocalStrorageValue = useCallback((): GameValue => {
+	const getLocalStrorageValue = useCallback((): LocalStorage | undefined => {
 		const localStorageValue: string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
 		if (localStorageValue === null) {
-			setLocalStorageValue(defaultGameValue);
-			return defaultGameValue;
+			return undefined;
 		} else {
 			return JsonUtils.toObject(localStorageValue);
 		}
-	}, [defaultGameValue, setLocalStorageValue]);
+	}, []);
 
 	const setBestScore = (score: number): void => {
-		const localStorageValue: GameValue = getLocalStrorageValue();
-		if (score > localStorageValue.bestScore) {
-			localStorageValue.bestScore = score;
-			setLocalStorageValue(localStorageValue);
+		const localStorageValue: LocalStorage | undefined = getLocalStrorageValue();
+		if (localStorageValue === undefined) {
+			setLocalStorageValue({ bestScore: score });
+		} else {
+			if (score > localStorageValue.bestScore) {
+				setLocalStorageValue({ bestScore: score });
+			}
 		}
 	};
 
 	const getBestScore = (): number => {
-		const localStorageValue: GameValue = getLocalStrorageValue();
-		return localStorageValue.bestScore;
+		const localStorageValue: LocalStorage | undefined = getLocalStrorageValue();
+		return localStorageValue === undefined ? 0 : localStorageValue.bestScore;
 	};
 
 	return { setBestScore, getBestScore };

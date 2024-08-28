@@ -1,10 +1,10 @@
-import { Board, BoardValue, Box, BoxDot, BoxId, BoxPath, BoxPathId, BoxValue, BoxValueId, BoxValuePath, GameValue } from "../type";
+import { cols, rows } from "../static";
+import { Board, BoardValue, Box, BoxDot, BoxId, BoxPath, BoxPathId, BoxValue, BoxValueId, BoxValuePath } from "../type";
 import { ArrayUtils } from "../utils";
 
 interface IDefaultValuesExports {
-	defaultBoard: (rows: number, cols: number) => Board;
-	defaultBoardValue: (rows: number, cols: number) => BoardValue;
-	defaultGameValue: GameValue;
+	defaultBoard: () => Board;
+	defaultBoardValue: () => BoardValue;
 }
 
 export const useDefaultValues = (): IDefaultValuesExports => {
@@ -13,10 +13,10 @@ export const useDefaultValues = (): IDefaultValuesExports => {
 		const isBottomEndToBottomStartPathVisible: boolean = rows === rowIndex + 1;
 
 		return {
-			topStartToTopEnd: { id: 1, isVisible: true, filledBy: null },
-			topEndToBottomEnd: { id: 2, isVisible: isTopEndToBottomEndPathVisible, filledBy: null },
-			bottomEndToBottomStart: { id: 3, isVisible: isBottomEndToBottomStartPathVisible, filledBy: null },
-			bottomStartToTopStart: { id: 4, isVisible: true, filledBy: null },
+			topStartToTopEnd: { id: 1, isVisible: true, filledBy: undefined },
+			topEndToBottomEnd: { id: 2, isVisible: isTopEndToBottomEndPathVisible, filledBy: undefined },
+			bottomEndToBottomStart: { id: 3, isVisible: isBottomEndToBottomStartPathVisible, filledBy: undefined },
+			bottomStartToTopStart: { id: 4, isVisible: true, filledBy: undefined },
 		};
 	};
 
@@ -37,7 +37,7 @@ export const useDefaultValues = (): IDefaultValuesExports => {
 		const id: BoxId = rows * rowIndex + (colIndex + 1);
 		const path: BoxPath = createDefaultPath(rows, cols, rowIndex, colIndex);
 		const dot: BoxDot = createDefaultDot(rows, cols, rowIndex, colIndex);
-		return { id: id, path: path, dot: dot, filledBy: null };
+		return { id: id, path: path, dot: dot, filledBy: undefined };
 	};
 
 	const createDefaultBoard = (rows: number, cols: number): Board => {
@@ -81,12 +81,8 @@ export const useDefaultValues = (): IDefaultValuesExports => {
 		});
 	};
 
-	const defaultBoard = (rows: number, cols: number): Board => createDefaultBoard(rows, cols);
-	const defaultBoardValue = (rows: number, cols: number): BoardValue => createDefaultBoardValue(rows, cols);
+	const defaultBoard = (): Board => createDefaultBoard(rows, cols);
+	const defaultBoardValue = (): BoardValue => createDefaultBoardValue(rows, cols);
 
-	const defaultGameValue: GameValue = {
-		bestScore: 0,
-	};
-
-	return { defaultBoard, defaultBoardValue, defaultGameValue };
+	return { defaultBoard, defaultBoardValue };
 };

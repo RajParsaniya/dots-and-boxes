@@ -1,49 +1,49 @@
 import { UseToastOptions } from "@chakra-ui/react";
-import { LOSE_TOAST_LABEL, NOT_STARTED_TOAST_LABEL, TIE_TOAST_LABEL, WON_TOAST_LABEL } from "../constants";
+import { LOSE_TOAST, NOT_STARTED_TOAST, TIE_TOAST, WON_TOAST } from "../constants";
 
 interface IToastOptionsExports {
-	notStartedToastOptions: UseToastOptions;
-	loseToastOptions: UseToastOptions;
-	wonToastOptions: UseToastOptions;
-	tieToastOptions: UseToastOptions;
+	getNotStartedToastOptions: UseToastOptions;
+	getLoseToastOptions: UseToastOptions;
+	getWonToastOptions: UseToastOptions;
+	getTieToastOptions: UseToastOptions;
 }
 
 export const useToastOptions = (): IToastOptionsExports => {
-	const notStartedToastOptions: UseToastOptions = {
+	const getNotStartedToastOptions: UseToastOptions = {
 		id: "not-started",
-		title: NOT_STARTED_TOAST_LABEL,
+		title: NOT_STARTED_TOAST,
 		isClosable: true,
 		position: "top-right",
 		status: "warning",
 		duration: 2500,
 	};
 
-	const loseToastOptions: UseToastOptions = {
+	const getLoseToastOptions: UseToastOptions = {
 		id: "lose",
-		title: LOSE_TOAST_LABEL,
+		title: LOSE_TOAST,
 		isClosable: true,
 		position: "top-right",
 		status: "error",
 		duration: null,
 	};
 
-	const wonToastOptions: UseToastOptions = {
+	const getWonToastOptions: UseToastOptions = {
 		id: "won",
-		title: WON_TOAST_LABEL,
+		title: WON_TOAST,
 		isClosable: true,
 		position: "top-right",
 		status: "success",
 		duration: null,
 	};
 
-	const tieToastOptions: UseToastOptions = {
+	const getTieToastOptions: UseToastOptions = {
 		id: "tie",
-		title: TIE_TOAST_LABEL,
+		title: TIE_TOAST,
 		isClosable: true,
 		position: "top-right",
 		status: "warning",
 		duration: null,
 	};
 
-	return { notStartedToastOptions, loseToastOptions, wonToastOptions, tieToastOptions };
+	return { getNotStartedToastOptions, getLoseToastOptions, getWonToastOptions, getTieToastOptions };
 };

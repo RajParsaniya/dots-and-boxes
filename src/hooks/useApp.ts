@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDefaultValues, useGameUtils, useLocalStorage, useToast, useToastOptions } from ".";
-import { Board, BoardValue, BoxId, BoxPathId, Move, Player } from "../type";
-
-interface IAppProps {
-	rows: number;
-	cols: number;
-}
+import { useCore, useDefaultValues, useLocalStorage, useToast, useToastOptions } from ".";
+import { EPlayer } from "../enums";
+import { Board, BoardValue, BoxId, BoxPathId, Move } from "../type";
 
 interface IAppExports {
-	board: Board | undefined;
+	board: Board;
+	reload: boolean;
 	isLoading: boolean;
 	isStarted: boolean;
 	isEnded: boolean;
@@ -17,12 +14,13 @@ interface IAppExports {
 	onClickPath: (boxId: BoxId, pathId: BoxPathId) => void;
 }
 
-export const useApp = (props: IAppProps): IAppExports => {
+export const useApp = (): IAppExports => {
 	const { defaultBoard, defaultBoardValue } = useDefaultValues();
 
-	const [board, setBoard] = useState<Board | undefined>(undefined);
-	const [boardValue, setBoardValue] = useState<BoardValue | undefined>(undefined);
+	const [board, setBoard] = useState<Board>(defaultBoard());
+	const [boardValue, setBoardValue] = useState<BoardValue>(defaultBoardValue());
 
+	const [reload, setReload] = useState<boolean>(true);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isStarted, setIsStarted] = useState<boolean>(false);
 	const [isFreezed, setIsFreezed] = useState<boolean>(false);
@@ -30,8 +28,8 @@ export const useApp = (props: IAppProps): IAppExports => {
 
 	const { toast, closeAll } = useToast();
 	const { setBestScore } = useLocalStorage();
-	const { isAllBoxesFilled, getScore, getMove, updateBoard } = useGameUtils();
-	const { notStartedToastOptions, loseToastOptions, wonToastOptions, tieToastOptions } = useToastOptions();
+	const { isAllBoxesFilled, getScore, getMove, updateBoard } = useCore();
+	const { getNotStartedToastOptions, getLoseToastOptions, getWonToastOptions, getTieToastOptions } = useToastOptions();
 
 	const isFinished = useMemo((): boolean => {
 		if (boardValue === undefined) {
@@ -41,13 +39,28 @@ export const useApp = (props: IAppProps): IAppExports => {
 		}
 	}, [boardValue, isAllBoxesFilled]);
 
-	const resetGame = useCallback((): void => {
-		setBoard(undefined);
-		setBoardValue(undefined);
-	}, []);
+	const onResetGame = useCallback((): void => {
+		setBoard(defaultBoard());
+		setBoardValue(defaultBoardValue());
+	}, [defaultBoard, defaultBoardValue]);
 
-	const updateGame = useCallback(
-		(boxId: BoxId, pathId: BoxPathId, player: Player): void => {
+	const onFinishGame = useCallback((): void => {
+		if (board !== undefined) {
+			const mineScore = getScore(board, EPlayer.ME);
+			const yourScore = getScore(board, EPlayer.YOU);
+
+			if (mineScore > yourScore) {
+				toast(getLoseToastOptions);
+			} else if (yourScore > mineScore) {
+				toast(getWonToastOptions);
+			} else {
+				toast(getTieToastOptions);
+			}
+		}
+	}, [board, getLoseToastOptions, getScore, getTieToastOptions, getWonToastOptions, toast]);
+
+	const onUpdateGame = useCallback(
+		(boxId: BoxId, pathId: BoxPathId, player: EPlayer): void => {
 			if (board != undefined && boardValue !== undefined) {
 				const {
 					board: updatedBoard,
@@ -68,77 +81,60 @@ export const useApp = (props: IAppProps): IAppExports => {
 		[board, boardValue, updateBoard]
 	);
 
-	const updateBestScore = useCallback((): void => {
+	const onUpdateBestScore = useCallback((): void => {
 		if (board !== undefined) {
-			setBestScore(getScore(board, "YOU"));
+			setBestScore(getScore(board, EPlayer.YOU));
 		}
 	}, [board, getScore, setBestScore]);
 
-	const finishGame = useCallback((): void => {
-		if (board !== undefined) {
-			const mineScore = getScore(board, "ME");
-			const yourScore = getScore(board, "YOU");
-
-			if (mineScore > yourScore) {
-				toast(loseToastOptions);
-			} else if (yourScore > mineScore) {
-				toast(wonToastOptions);
-			} else {
-				toast(tieToastOptions);
-			}
-		}
-	}, [board, getScore, loseToastOptions, tieToastOptions, toast, wonToastOptions]);
-
 	const onClickStart = (): void => {
 		setIsLoading(true);
-		setTimeout(() => {
+		setTimeout((): void => {
 			setIsLoading(false);
 			setIsStarted(true);
 		}, 300);
 	};
 
 	const onClickReplay = (): void => {
-		if (isEnded || !isFreezed) {
-			setIsStarted(false);
-			setIsEnded(false);
-			resetGame();
-			closeAll();
-		}
+		setIsStarted(false);
+		setIsEnded(false);
+		setReload(true);
+		onResetGame();
+		closeAll();
 	};
 
 	const onClickPath = (boxId: BoxId, pathId: BoxPathId): void => {
 		if (!isStarted) {
-			toast(notStartedToastOptions);
+			toast(getNotStartedToastOptions);
 		} else if (!isFreezed) {
-			updateGame(boxId, pathId, "YOU");
-			updateBestScore();
+			onUpdateGame(boxId, pathId, EPlayer.YOU);
+			onUpdateBestScore();
 		}
 	};
 
-	useEffect(() => {
-		if (board === undefined && boardValue === undefined) {
-			setTimeout(() => {
-				setBoard(defaultBoard(props.rows, props.cols));
-				setBoardValue(defaultBoardValue(props.rows, props.cols));
+	useEffect((): void => {
+		if (reload) {
+			setTimeout((): void => {
+				setReload(false);
 			}, 500);
 		}
-	}, [board, boardValue, defaultBoard, defaultBoardValue, props.cols, props.rows]);
+	}, [reload]);
 
-	useEffect(() => {
+	useEffect((): void => {
 		if (boardValue !== undefined && isFreezed && isStarted && !isFinished) {
-			setTimeout(() => {
+			setTimeout((): void => {
 				const move: Move = getMove(boardValue);
-				updateGame(move.boxId, move.boxPathId, "ME");
+				onUpdateGame(move.boxId, move.boxPathId, EPlayer.ME);
 			}, 300);
 		}
-	}, [boardValue, getMove, isFinished, isFreezed, isStarted, updateGame]);
+	}, [boardValue, getMove, isFinished, isFreezed, isStarted, onUpdateGame]);
 
-	useEffect(() => {
+	useEffect((): void => {
 		if (isFinished && !isEnded) {
 			setIsEnded(true);
-			finishGame();
+			onFinishGame();
 		}
-	}, [finishGame, isEnded, isFinished]);
+	}, [onFinishGame, isEnded, isFinished]);
 
-	return { board, isLoading, isStarted, isEnded, onClickStart, onClickReplay, onClickPath };
+	return { board, reload, isLoading, isStarted, isEnded, onClickStart, onClickReplay, onClickPath };
 };

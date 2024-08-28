@@ -1,3 +1,5 @@
+import { cloneDeep } from "lodash";
+
 export class ArrayUtils {
 	private constructor() {}
 
@@ -6,7 +8,7 @@ export class ArrayUtils {
 	}
 
 	public static clone<T>(list: Array<T>): Array<T> {
-		return [...list];
+		return cloneDeep(list);
 	}
 
 	public static random<T>(list: Array<T>): T {

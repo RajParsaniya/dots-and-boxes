@@ -23,12 +23,9 @@ export const useToast = (): IToastExports => {
 	};
 
 	const toast = (toastOptions: UseToastOptions): void => {
-		if (toastOptions.id !== undefined && isActive(toastOptions.id)) {
-			close(toastOptions.id);
-		}
-		setTimeout(() => {
+		if (toastOptions.id !== undefined && !isActive(toastOptions.id)) {
 			customToast(toastOptions);
-		}, 10);
+		}
 	};
 
 	return { isActive, close, closeAll, toast };
