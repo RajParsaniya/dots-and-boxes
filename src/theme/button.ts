@@ -1,17 +1,16 @@
-export const buttonStyles = {
+import { defineStyle } from "@chakra-ui/react";
+
+export const buttonStyles: Record<string, object> = {
 	components: {
 		Button: {
 			variants: {
-				primary: {
-					color: "brand.primary.darker",
-					borderRadius: "lg",
+				primary: defineStyle({
 					fontSize: "sm",
 					fontWeight: "normal",
+					borderRadius: "lg",
+					color: "brand.primary.darker",
 					backgroundColor: "brand.secondary.default",
-					_hover: {
-						opacity: 0.7,
-					},
-				},
+				}),
 			},
 		},
 	},

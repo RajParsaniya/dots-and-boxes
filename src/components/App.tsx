@@ -3,11 +3,8 @@ import { Content } from ".";
 import { FOOTER_TEXT, GITHUB_URL, TITLE_TEXT } from "../constants";
 import { useApp } from "../hooks";
 
-export const App = () => {
-	const rows: number = 8;
-	const cols: number = 8;
-
-	const { board, isLoading, isStarted, isEnded, onClickStart, onClickReplay, onClickPath } = useApp({ rows: rows, cols: cols });
+export const App = (): JSX.Element => {
+	const { board, reload, isLoading, isStarted, isEnded, onClickStart, onClickReplay, onClickPath } = useApp();
 
 	return (
 		<Center w="full" minW="100vw" h="full" minH="100vh">
@@ -18,6 +15,7 @@ export const App = () => {
 				<HStack w="400px" minW="400px" maxW="400px" h="400px" minH="400px" maxH="400px" px={10}>
 					<Content
 						board={board}
+						reload={reload}
 						isLoading={isLoading}
 						isStarted={isStarted}
 						isEnded={isEnded}

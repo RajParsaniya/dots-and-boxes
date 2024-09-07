@@ -1,4 +1,5 @@
-import { Board, BoardValue, Box, BoxId, BoxPath, BoxPathId, BoxValue, BoxValuePath, Move, Player } from "../type";
+import { EPlayer } from "../enums";
+import { Board, BoardValue, Box, BoxId, BoxPath, BoxPathId, BoxValue, BoxValuePath, Move } from "../type";
 import { ArrayUtils } from "../utils";
 
 interface IBoxValuePathAngle {
@@ -17,7 +18,7 @@ interface IUpdateBoardProps {
 	boardValue: BoardValue;
 	boxId: BoxId;
 	pathId: BoxPathId;
-	player: Player;
+	player: EPlayer;
 }
 
 interface IUpdateBoardExports {
@@ -26,16 +27,16 @@ interface IUpdateBoardExports {
 	isBoxFilled: boolean;
 }
 
-interface IGameUtilsExports {
+interface ICoreExports {
 	isAllBoxesFilled: (boardValue: BoardValue) => boolean;
 	calculateDimensions: (board: Board) => ICalculateDimensionsExports;
 	getClassName: (classes: Array<string>) => string;
-	getScore: (board: Board, player: Player) => number;
+	getScore: (board: Board, player: EPlayer) => number;
 	getMove: (boardValue: BoardValue) => Move;
 	updateBoard: (props: IUpdateBoardProps) => IUpdateBoardExports;
 }
 
-export const useGameUtils = (): IGameUtilsExports => {
+export const useCore = (): ICoreExports => {
 	const isBoxPathMatched = (path: BoxPath, pathId: BoxPathId): boolean => {
 		return (
 			path.topStartToTopEnd.id === pathId ||
@@ -80,7 +81,7 @@ export const useGameUtils = (): IGameUtilsExports => {
 		return classes.join(" ");
 	};
 
-	const getScore = (board: Board, player: Player): number => {
+	const getScore = (board: Board, player: EPlayer): number => {
 		return board.reduce((previous: Array<Box>, current: Array<Box>): Array<Box> => {
 			return previous.filter((box: Box) => box.filledBy === player).concat(current.filter((box: Box) => box.filledBy === player));
 		}, []).length;

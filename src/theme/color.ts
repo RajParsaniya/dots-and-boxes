@@ -1,4 +1,4 @@
-export const colors = {
+export const colors: Record<string, object> = {
 	colors: {
 		brand: {
 			primary: {

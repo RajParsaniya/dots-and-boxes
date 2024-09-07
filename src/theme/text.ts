@@ -1,26 +1,28 @@
-export const textStyle = {
+import { defineStyle } from "@chakra-ui/react";
+
+export const textStyle: Record<string, object> = {
 	components: {
 		Text: {
-			baseStyle: {
+			baseStyle: defineStyle({
 				userSelect: "none",
 				textDecoration: "none",
 				fontFamily: "Helvetica, sans-serif",
-			},
+			}),
 			variants: {
-				title: {
+				title: defineStyle({
 					fontSize: "2xl",
 					color: "brand.secondary.default",
-				},
-				label: {
+				}),
+				label: defineStyle({
 					fontWeight: "semibold",
 					fontSize: "sm",
 					color: "brand.primary.default",
-				},
-				score: {
+				}),
+				score: defineStyle({
 					fontWeight: "semibold",
 					fontSize: "sm",
 					color: "brand.secondary.default",
-				},
+				}),
 			},
 		},
 	},

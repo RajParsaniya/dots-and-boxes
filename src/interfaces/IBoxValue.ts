@@ -1,6 +1,6 @@
 import { BoxId, BoxPathId, BoxValueId, BoxValuePath } from "../type";
 
-export interface IBoxValuePathType {
+export interface IBoxValuePath {
 	boxId: BoxId;
 	boxPathId: BoxPathId;
 	isFilled: boolean;

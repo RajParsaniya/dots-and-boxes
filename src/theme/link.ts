@@ -1,8 +1,10 @@
-export const linkStyles = {
+import { defineStyle } from "@chakra-ui/react";
+
+export const linkStyles: Record<string, object> = {
 	components: {
 		Link: {
 			variants: {
-				footer: {
+				footer: defineStyle({
 					fontSize: "lg",
 					fontFamily: "Helvetica, sans-serif",
 					userSelect: "none",
@@ -13,7 +15,7 @@ export const linkStyles = {
 						textDecoration: "none",
 						opacity: 0.7,
 					},
-				},
+				}),
 			},
 		},
 	},

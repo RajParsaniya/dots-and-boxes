@@ -1,4 +1,4 @@
-import { Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 
 interface IScoreProps {
 	label: string;
@@ -6,19 +6,21 @@ interface IScoreProps {
 	sx?: object;
 }
 
-export const Score = (props: IScoreProps) => {
+export const Score = (props: IScoreProps): JSX.Element => {
 	return (
-		<Flex w="full" h="full" direction="row" overflow="hidden" borderRadius="lg" borderWidth={1} sx={props.sx}>
-			<Center w={0} h="full" flex="1 1 auto" backgroundColor="brand.secondary.default">
-				<Text w="fit-content" h="fit-content" variant="label">
-					{props.label}
-				</Text>
-			</Center>
-			<Center w={10} minW={10} maxW={10} h="full">
-				<Text w="fit-content" h="fit-content" variant="score">
-					{props.score}
-				</Text>
-			</Center>
-		</Flex>
+		<Box w="full" h="full" sx={props.sx}>
+			<Flex w="full" h="full" direction="row" borderWidth={1} borderRadius="lg" overflow="hidden">
+				<Center w={0} h="full" flex="1 1 auto" backgroundColor="brand.secondary.default">
+					<Text w="fit-content" h="fit-content" variant="label">
+						{props.label}
+					</Text>
+				</Center>
+				<Center w={10} minW={10} maxW={10} h="full">
+					<Text w="fit-content" h="fit-content" variant="score">
+						{props.score}
+					</Text>
+				</Center>
+			</Flex>
+		</Box>
 	);
 };

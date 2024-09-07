@@ -1,12 +1,13 @@
-import { BoxDot, BoxDotId, BoxId, BoxPath, BoxPathId, Player } from "../type";
+import { EPlayer } from "../enums";
+import { BoxDot, BoxDotId, BoxId, BoxPath, BoxPathId } from "../type";
 
-export interface IBoxPathType {
+export interface IBoxPath {
 	id: BoxPathId;
 	isVisible: boolean;
-	filledBy: Player | null;
+	filledBy?: EPlayer;
 }
 
-export interface IBoxDotType {
+export interface IBoxDot {
 	id: BoxDotId;
 	isVisible: boolean;
 }
@@ -15,5 +16,5 @@ export interface IBox {
 	id: BoxId;
 	path: BoxPath;
 	dot: BoxDot;
-	filledBy: Player | null;
+	filledBy?: EPlayer;
 }
