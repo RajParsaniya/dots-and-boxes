@@ -4,4 +4,4 @@ export * from "./useDefaultValues";
 export * from "./useGame";
 export * from "./useLocalStorage";
 export * from "./useToast";
-export * from "./useToastOptions";
+export * from "./useToastValue";
