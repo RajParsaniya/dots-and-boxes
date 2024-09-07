@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useCore, useDefaultValues, useLocalStorage, useToast, useToastOptions } from ".";
+import { useCore, useDefaultValues, useLocalStorage, useToast, useToastValue } from ".";
 import { EPlayer } from "../enums";
 import { Board, BoardValue, BoxId, BoxPathId, Move } from "../type";
 
@@ -26,10 +26,10 @@ export const useApp = (): IAppExports => {
 	const [isFreezed, setIsFreezed] = useState<boolean>(false);
 	const [isEnded, setIsEnded] = useState<boolean>(false);
 
-	const { toast, closeAll } = useToast();
+	const { toast, closeAllToast } = useToast();
 	const { setBestScore } = useLocalStorage();
 	const { isAllBoxesFilled, getScore, getMove, updateBoard } = useCore();
-	const { getNotStartedToastOptions, getLoseToastOptions, getWonToastOptions, getTieToastOptions } = useToastOptions();
+	const { getNotStartedToastOptions, getLoseToastOptions, getWonToastOptions, getTieToastOptions } = useToastValue();
 
 	const isFinished = useMemo((): boolean => {
 		if (boardValue === undefined) {
@@ -100,7 +100,7 @@ export const useApp = (): IAppExports => {
 		setIsEnded(false);
 		setReload(true);
 		onResetGame();
-		closeAll();
+		closeAllToast();
 	};
 
 	const onClickPath = (boxId: BoxId, pathId: BoxPathId): void => {

@@ -1,32 +1,32 @@
 import { CreateToastFnReturn, ToastId, UseToastOptions, useToast as useChakraToast } from "@chakra-ui/react";
 
 interface IToastExports {
-	isActive: (id: ToastId) => boolean;
-	close: (id: ToastId) => void;
-	closeAll: () => void;
+	isActiveToast: (id: ToastId) => boolean;
+	closeToast: (id: ToastId) => void;
+	closeAllToast: () => void;
 	toast: (toastOptions: UseToastOptions) => void;
 }
 
 export const useToast = (): IToastExports => {
 	const customToast: CreateToastFnReturn = useChakraToast();
 
-	const isActive = (id: ToastId): boolean => {
+	const isActiveToast = (id: ToastId): boolean => {
 		return customToast.isActive(id);
 	};
 
-	const close = (id: ToastId): void => {
+	const closeToast = (id: ToastId): void => {
 		customToast.close(id);
 	};
 
-	const closeAll = (): void => {
+	const closeAllToast = (): void => {
 		customToast.closeAll();
 	};
 
 	const toast = (toastOptions: UseToastOptions): void => {
-		if (toastOptions.id !== undefined && !isActive(toastOptions.id)) {
+		if (toastOptions.id !== undefined && !isActiveToast(toastOptions.id)) {
 			customToast(toastOptions);
 		}
 	};
 
-	return { isActive, close, closeAll, toast };
+	return { isActiveToast, closeToast, closeAllToast, toast };
 };

@@ -1,14 +1,14 @@
 import { UseToastOptions } from "@chakra-ui/react";
 import { LOSE_TOAST, NOT_STARTED_TOAST, TIE_TOAST, WON_TOAST } from "../constants";
 
-interface IToastOptionsExports {
+interface IToastValueExports {
 	getNotStartedToastOptions: UseToastOptions;
 	getLoseToastOptions: UseToastOptions;
 	getWonToastOptions: UseToastOptions;
 	getTieToastOptions: UseToastOptions;
 }
 
-export const useToastOptions = (): IToastOptionsExports => {
+export const useToastValue = (): IToastValueExports => {
 	const getNotStartedToastOptions: UseToastOptions = {
 		id: "not-started",
 		title: NOT_STARTED_TOAST,
